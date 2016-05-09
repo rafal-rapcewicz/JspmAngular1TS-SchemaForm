@@ -5,11 +5,14 @@
     public form: any;
     public model: any;
 
-    static $inject = ['$scope'];
+    static $inject = ['$scope', '$timeout', '$q'];
 
     private invalidSwitcher: boolean = false;
 
-    constructor(private $scope: ng.IScope) {
+    constructor(
+        private $scope: ng.IScope,
+        private $timeout: ng.ITimeoutService,
+        private $q: ng.IQService) {
         this.bootstrapSuccessful = true;
         this.setupForm();
     }
@@ -45,8 +48,40 @@
             required: ['name', 'email', 'comment']
         };
         this.form = [
-            'name',
-            'title',
+            //'name', //without additional configuration use just filed name as string
+            {
+                key: 'name',
+                validationMessage: {                    
+                    forbidden: '{{viewValue}} is forbidden !!!'
+                },
+                $asyncValidators: {
+                    forbidden: (value: string) => {
+                        var deferred = this.$q.defer();
+                        this.$timeout(function () {
+                            if (value === 'Java') {
+                                deferred.reject();
+                            } else {
+                                deferred.resolve();
+                            }
+                        }, 500);
+                        return deferred.promise;
+                    }
+                }
+            },
+            {
+                key: 'title',
+                validationMessage: {
+                    noBob: 'NaN is not OK! You here me?'
+                },
+                $validators: {
+                    noBob: (value: string) => {
+                        if (value === 'NaN') {
+                            return false;
+                        }
+                        return true
+                    }
+                }
+            },
             'email',
             {
                 key: 'comment',
