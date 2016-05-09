@@ -7,20 +7,46 @@
     constructor() {
         this.bootstrapSuccessful = true;
         this.schema = {
-            type: "object",
+            type: 'object',
+            title: 'Comment',
             properties: {
-                name: { type: "string", minLength: 2, title: "Name", description: "Name or alias" },
+                name: {
+                    type: 'string',
+                    minLength: 2,
+                    title: 'Name',
+                    description: 'Name or alias'
+                },
                 title: {
-                    type: "string",
+                    type: 'string',
                     enum: ['dr', 'jr', 'sir', 'mrs', 'mr', 'NaN', 'dj']
+                },
+                email: {
+                    title: 'Email',
+                    type: 'string',
+                    pattern: '^\\S+@\\S+$',
+                    description: 'Email will be used for evil.'
+                },
+                comment: {
+                    title: 'Comment',
+                    type: 'string',
+                    maxLength: 20,
+                    validationMessage: 'Don\'t be greedy!'
                 }
-            }
+            },
+            required: ['name', 'email', 'comment']
         };
         this.form = [
-            "*",
+            'name',
+            'title',
+            'email',
             {
-                type: "submit",
-                title: "Save"
+                key: 'comment',
+                type: 'textarea',
+                placeholder: 'Make a comment'
+            },
+            {
+                type: 'submit',
+                title: 'Save'
             }
         ];
         this.model = {};
