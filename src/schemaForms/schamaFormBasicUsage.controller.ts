@@ -1,11 +1,20 @@
 ﻿class SchamaFormBasicUsageController {
-    bootstrapSuccessful: boolean;
-    schema: any;
-    form: any;
-    model: any;
 
-    constructor() {
+    public bootstrapSuccessful: boolean;
+    public schema: any;
+    public form: any;
+    public model: any;
+
+    static $inject = ['$scope'];
+
+    private invalidSwitcher: boolean = false;
+
+    constructor(private $scope: ng.IScope) {
         this.bootstrapSuccessful = true;
+        this.setupForm();
+    }
+
+    private setupForm = (): void => {
         this.schema = {
             type: 'object',
             title: 'Comment',
@@ -42,7 +51,12 @@
             {
                 key: 'comment',
                 type: 'textarea',
-                placeholder: 'Make a comment'
+                placeholder: 'Make a comment',
+                validationMessage: {
+                    // {{title}} -> https://github.com/json-schema-form/angular-schema-form/blob/master/docs/index.md#message-interpolation
+                    302: '{{title}} is like, uh, required?'
+                    //302: ctx => 'Comment is like, uh, required?'
+                }
             },
             {
                 type: 'submit',
@@ -50,7 +64,28 @@
             }
         ];
         this.model = {};
-    }
+    };
+
+    public onSubmit = (form: any): void => {
+        // First we broadcast an event so all fields validate themselves
+        this.$scope.$broadcast('schemaFormValidate');
+
+        // Then we check if the form is valid
+        if (form.$valid) {
+            // ... do whatever you need to do with your data.
+        }
+    };
+
+    public makeInvalid = (): void => {
+
+        this.invalidSwitcher = !this.invalidSwitcher;
+
+        if (this.invalidSwitcher) {
+            this.$scope.$broadcast('schemaForm.error.name', 'usernameAlreadyTaken', 'The username is already taken');
+        } else {
+            this.$scope.$broadcast('schemaForm.error.name', 'usernameAlreadyTaken', true);
+        };
+    };
 }
 
 export default SchamaFormBasicUsageController;

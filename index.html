@@ -14,7 +14,9 @@
     <h3 class="success hide" ng-class="{'show': vm.bootstrapSuccessful}">SUCCESS</h3>
     <h3 class="error" ng-class="{'hide': vm.bootstrapSuccessful}">ERROR - SEE IN DEVELOPER TOOLS</h3>
     
-    <form sf-schema="vm.schema" sf-form="vm.form" sf-model="vm.model"></form>
-
+    <form name="myForm" sf-schema="vm.schema" sf-form="vm.form" sf-model="vm.model" 
+          sf-options="{ validationMessage: { 302: 'Do not forget me!' }}" ng-submit="vm.onSubmit(myForm)"></form>
+    <!-- sf-options -> https://github.com/json-schema-form/angular-schema-form/blob/master/docs/index.md#global-options -->
+    <button ng-click="vm.makeInvalid()">Switch name invalid</button>
 </body>
 </html>
