@@ -1,0 +1,15 @@
+﻿body {
+	font-family: sans-serif;
+}
+.hide {
+	display: none;
+}
+.show {
+	display: inline;
+}
+.success {
+	color: green;
+}
+.error {
+	color: red;
+}

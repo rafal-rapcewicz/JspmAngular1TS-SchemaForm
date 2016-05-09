@@ -1,0 +1,17 @@
+{
+  "jspm": {
+    "dependencies": {
+      "angular": "github:angular/bower-angular@^1.5.5",
+      "angular-sanitize": "github:angular/bower-angular-sanitize@^1.5.5",
+      "angular-schema-form": "github:json-schema-form/angular-schema-form@^0.8.13",
+      "angular-schema-form-bootstrap": "github:json-schema-form/angular-schema-form-bootstrap@^0.2.0",
+      "angular-ui-router": "github:angular-ui/angular-ui-router-bower@^0.2.18",
+      "bootstrap": "github:twbs/bootstrap@^3.3.6",
+      "geraintluff/tv4": "github:geraintluff/tv4@^1.2.7",
+      "mike-marcacci/objectpath": "github:mike-marcacci/objectpath@^1.2.1"
+    },
+    "devDependencies": {
+      "typescript": "npm:typescript@^1.6.2"
+    }
+  }
+}

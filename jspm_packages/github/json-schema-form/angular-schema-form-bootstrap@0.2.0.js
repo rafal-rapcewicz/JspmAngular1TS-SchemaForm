@@ -1,0 +1,1 @@
+module.exports = require("github:json-schema-form/angular-schema-form-bootstrap@0.2.0/bootstrap-decorator.js");
