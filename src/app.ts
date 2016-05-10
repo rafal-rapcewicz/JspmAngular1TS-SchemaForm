@@ -11,4 +11,10 @@ import 'angular-ui-router';
 import SchamaFormBasicUsageController from './schemaForms/schamaFormBasicUsage.controller';
 
 angular.module('TypeScriptUMDExample', ['ngSanitize', 'schemaForm'])
-    .controller('exampleController', SchamaFormBasicUsageController);
+    .controller('exampleController', SchamaFormBasicUsageController)
+    .config(['schemaFormProvider', schemaFormProvider => {
+        schemaFormProvider.postProcess(form => {
+            form.reverse();
+            return form;
+        })
+    }]);

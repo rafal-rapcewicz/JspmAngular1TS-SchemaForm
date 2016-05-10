@@ -28,6 +28,14 @@
                     title: 'Name',
                     description: 'Name or alias'
                 },
+                choice: {
+                    type: 'string',
+                    enum: ['one', 'two']
+                },
+                confirm: {
+                    type: 'boolean',
+                    default: false
+                },
                 title: {
                     type: 'string',
                     enum: ['dr', 'jr', 'sir', 'mrs', 'mr', 'NaN', 'dj']
@@ -43,6 +51,27 @@
                     type: 'string',
                     maxLength: 20,
                     validationMessage: 'Don\'t be greedy!'
+                },
+                country: {
+                    title: 'Country',
+                    type: 'string',
+                    maxLength: 20
+                },
+                subforms: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            name: { 'type': 'string' },
+                            nick: { 'type': 'string' },
+                            emails: {
+                                type: 'array',
+                                items: {
+                                    'type': 'string'
+                                }
+                            }
+                        }
+                    }
                 }
             },
             required: ['name', 'email', 'comment']
@@ -51,7 +80,7 @@
             //'name', //without additional configuration use just filed name as string
             {
                 key: 'name',
-                validationMessage: {                    
+                validationMessage: {
                     forbidden: '{{viewValue}} is forbidden !!!'
                 },
                 $asyncValidators: {
@@ -69,6 +98,26 @@
                 }
             },
             {
+                key: 'choice',
+                type: 'radiobuttons',
+                titleMap: [
+                    { value: 'one', name: 'One' },
+                    { value: 'two', name: 'More...' }
+                ]
+            },
+            {
+                type: 'help',
+                helpvalue: '<h1>Yo Ninja!</h1>'
+            },
+            {
+                key: 'confirm',
+                type: 'radios',
+                titleMap: [
+                    { value: false, name: 'No I don\'t understand these cryptic terms' },
+                    { value: true, name: 'Yes this makes perfect sense to me' }
+                ]
+            },
+            {
                 key: 'title',
                 validationMessage: {
                     noBob: 'NaN is not OK! You here me?'
@@ -82,20 +131,67 @@
                     }
                 }
             },
-            'email',
             {
-                key: 'comment',
-                type: 'textarea',
-                placeholder: 'Make a comment',
-                validationMessage: {
-                    // {{title}} -> https://github.com/json-schema-form/angular-schema-form/blob/master/docs/index.md#message-interpolation
-                    302: '{{title}} is like, uh, required?'
-                    //302: ctx => 'Comment is like, uh, required?'
-                }
+                type: 'template',
+                template: '<h1 ng-click=\'form.foo()\'>Yo {{form.name}} 2!</h1>',
+                //templateUrl: 'templates/foo.html',
+                name: 'Ninja',
+                foo: function () { console.log('oh noes!'); }
             },
             {
-                type: 'submit',
-                title: 'Save'
+                type: 'fieldset',
+                items: [
+                    'email',
+                    {
+                        key: 'comment',
+                        type: 'textarea',
+                        placeholder: 'Make a comment',
+                        validationMessage: {
+                            // {{title}} -> https://github.com/json-schema-form/angular-schema-form/blob/master/docs/index.md#message-interpolation
+                            302: '{{title}} is like, uh, required?'
+                            //302: ctx => 'Comment is like, uh, required?'
+                        }
+                    },
+                    {
+                        key: 'country',
+                        type: 'select',
+                        titleMap: [
+                            { value: 'US', name: 'US', group: 'NorthAmerica' },
+                            { value: 'PL', name: 'Poland', group: 'Europe' },
+                            { value: 'SP', name: 'Spain', group: 'Europe' }
+                        ]
+                    }
+                ]
+            },
+            {
+                key: 'subforms',
+                add: 'Add person',
+                style: {
+                    add: 'btn-success'
+                },
+                items: [
+                    'subforms[].nick',
+                    'subforms[].name',
+                    'subforms[].emails',
+                ],
+                startEmpty: true
+            },
+            {
+                type: 'actions',
+                items: [
+                    {
+                        type: 'submit',
+                        style: 'btn-warning',
+                        title: 'Save'
+                    },
+                    {
+                        type: 'button',
+                        style: 'btn-danger margin-left',
+                        icon: 'glyphicon glyphicon-refresh',
+                        title: 'Switch name invalid',
+                        onClick: 'vm.makeInvalid()'
+                    }
+                ]
             }
         ];
         this.model = {};
