@@ -141,7 +141,10 @@
             {
                 type: 'fieldset',
                 items: [
-                    'email',
+                    {
+                        key: 'email',
+                        htmlClass: 'col-md-4'
+                    },
                     {
                         key: 'comment',
                         type: 'textarea',
@@ -150,7 +153,8 @@
                             // {{title}} -> https://github.com/json-schema-form/angular-schema-form/blob/master/docs/index.md#message-interpolation
                             302: '{{title}} is like, uh, required?'
                             //302: ctx => 'Comment is like, uh, required?'
-                        }
+                        },
+                        htmlClass: 'col-md-4'
                     },
                     {
                         key: 'country',
@@ -159,7 +163,8 @@
                             { value: 'US', name: 'US', group: 'NorthAmerica' },
                             { value: 'PL', name: 'Poland', group: 'Europe' },
                             { value: 'SP', name: 'Spain', group: 'Europe' }
-                        ]
+                        ],
+                        htmlClass: 'col-md-4'
                     }
                 ]
             },
